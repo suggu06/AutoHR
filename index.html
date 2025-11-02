@@ -1,0 +1,1136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AutoHR - Smart Hiring Platform</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --background: #0a0a0a;
+            --surface: #1a1a1a;
+            --card: #262626;
+            --primary: #14b8a6;
+            --accent: #f59e0b;
+            --text: #ffffff;
+            --text-secondary: #9ca3af;
+            --border: #374151;
+        }
+
+        body {
+            font-family: system-ui, -apple-system, sans-serif;
+            background: var(--background);
+            color: var(--text);
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Portal Selection Styles */
+        .portal-selection {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, var(--card), var(--surface));
+        }
+
+        .portal-content {
+            text-align: center;
+            padding: 2rem;
+        }
+
+        .portal-logo {
+            font-size: 3.5rem;
+            font-weight: bold;
+            background: linear-gradient(45deg, var(--primary), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 1rem;
+        }
+
+        .portal-tagline {
+            font-size: 1.25rem;
+            color: var(--text-secondary);
+            margin-bottom: 3rem;
+            max-width: 600px;
+        }
+
+        .portal-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .portal-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 1.5rem;
+            padding: 2.5rem;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .portal-card:hover {
+            border-color: var(--primary);
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+        }
+
+        .portal-icon {
+            font-size: 3rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .portal-card h2 {
+            font-size: 1.75rem;
+            margin-bottom: 1rem;
+            color: var(--text);
+        }
+
+        .portal-card p {
+            color: var(--text-secondary);
+            margin-bottom: 2rem;
+        }
+
+        .btn {
+            padding: 0.75rem 2rem;
+            border-radius: 0.75rem;
+            border: none;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 1rem;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #0d9488;
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 2px solid var(--primary);
+            color: var(--primary);
+        }
+
+        .btn-outline:hover {
+            background: var(--primary);
+            color: white;
+        }
+
+        /* Public Site Styles */
+        .public-site {
+            min-height: 100vh;
+            display: none;
+        }
+
+        .nav {
+            background: var(--surface);
+            border-bottom: 1px solid var(--border);
+            padding: 1rem 0;
+        }
+
+        .nav-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            background: linear-gradient(45deg, var(--primary), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .nav-buttons {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .hero {
+            background: linear-gradient(135deg, var(--card), var(--surface));
+            padding: 4rem 0;
+            text-align: center;
+            position: relative;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.4);
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            font-weight: bold;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(45deg, var(--primary), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero p {
+            font-size: 1.25rem;
+            color: var(--text-secondary);
+            max-width: 600px;
+            margin: 0 auto 2rem;
+        }
+
+        .jobs-section {
+            padding: 3rem 0;
+        }
+
+        .search-box {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 1rem;
+            padding: 0.75rem 1rem;
+            width: 100%;
+            color: var(--text);
+            margin-bottom: 1.5rem;
+        }
+
+        .search-box:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+
+        .filters {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .filter-select {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 0.75rem;
+            padding: 0.5rem 1rem;
+            color: var(--text);
+            min-width: 150px;
+        }
+
+        .filter-select:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+
+        .jobs-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .job-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 1rem;
+            padding: 1.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .job-card:hover {
+            border-color: var(--primary);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+        }
+
+        .job-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: var(--text);
+        }
+
+        .job-meta {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .job-meta-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        .job-description {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            margin-bottom: 1.5rem;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .job-actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .job-date {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 1px solid var(--border);
+            color: var(--text-secondary);
+            padding: 0.5rem 1rem;
+            border-radius: 0.75rem;
+            text-decoration: none;
+            font-size: 0.9rem;
+        }
+
+        .btn-outline:hover {
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+
+        /* HR Dashboard Styles */
+        .hr-dashboard {
+            display: none;
+            min-height: 100vh;
+        }
+
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 250px;
+            height: 100vh;
+            background: var(--surface);
+            border-right: 1px solid var(--border);
+            padding: 1.5rem;
+        }
+
+        .sidebar-header {
+            padding-bottom: 1.5rem;
+            border-bottom: 1px solid var(--border);
+            margin-bottom: 1.5rem;
+        }
+
+        .sidebar-nav {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem 1rem;
+            border-radius: 0.75rem;
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .nav-item.active,
+        .nav-item:hover {
+            background: var(--primary);
+            color: white;
+        }
+
+        .main-content {
+            margin-left: 250px;
+            padding: 2rem;
+        }
+
+        .login-form {
+            max-width: 400px;
+            margin: 2rem auto;
+            background: var(--surface);
+            padding: 2rem;
+            border-radius: 1rem;
+            border: 1px solid var(--border);
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 0.75rem;
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 0.75rem;
+            color: var(--text);
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+
+        .password-input {
+            position: relative;
+        }
+
+        .toggle-password {
+            position: absolute;
+            right: 0.75rem;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            cursor: pointer;
+        }
+
+        .demo-credentials {
+            background: var(--card);
+            padding: 1rem;
+            border-radius: 0.75rem;
+            border: 1px solid var(--border);
+            margin-top: 1.5rem;
+        }
+
+        .demo-credentials h4 {
+            margin-bottom: 0.5rem;
+            color: var(--text-secondary);
+        }
+
+        .demo-credentials p {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+
+        .skeleton {
+            background: linear-gradient(90deg, var(--card) 25%, var(--surface) 50%, var(--card) 75%);
+            background-size: 200% 100%;
+            animation: loading 1.5s infinite;
+            border-radius: 0.5rem;
+        }
+
+        @keyframes loading {
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
+        }
+
+        .skeleton-text {
+            height: 1rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .skeleton-title {
+            height: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        /* Candidate Registration Styles */
+        .candidate-registration {
+            display: none;
+            min-height: 100vh;
+            background: var(--background);
+        }
+
+        .registration-header {
+            background: var(--surface);
+            border-bottom: 1px solid var(--border);
+            padding: 1rem 0;
+        }
+
+        .registration-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem 20px;
+        }
+
+        .registration-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+        }
+
+        .stat-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 1rem;
+            padding: 1.5rem;
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 2rem;
+            font-weight: bold;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        .quick-actions {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+        }
+
+        .action-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 1rem;
+            padding: 2rem;
+            text-align: center;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .action-card:hover {
+            border-color: var(--primary);
+            transform: translateY(-2px);
+        }
+
+        .action-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .action-card h3 {
+            margin-bottom: 1rem;
+            color: var(--text);
+        }
+
+        .action-card p {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            margin-bottom: 1.5rem;
+        }
+    </style>
+</head>
+<body>
+    <!-- Portal Selection Screen -->
+    <div class="portal-selection" id="portalSelection">
+        <div class="portal-content">
+            <div class="portal-logo">AutoHR</div>
+            <p class="portal-tagline">Smart Hiring Platform - Choose your portal to get started</p>
+            
+            <div class="portal-cards">
+                <div class="portal-card" onclick="showCandidatePortal()">
+                    <div class="portal-icon">👨‍💼</div>
+                    <h2>Candidate Portal</h2>
+                    <p>Browse job opportunities, apply for positions, and manage your applications</p>
+                    <button class="btn btn-primary">Enter as Candidate</button>
+                </div>
+                
+                <div class="portal-card" onclick="showHRLogin()">
+                    <div class="portal-icon">🏢</div>
+                    <h2>HR Portal</h2>
+                    <p>Manage job postings, review applications, and handle hiring processes</p>
+                    <button class="btn btn-outline">HR Login</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Candidate Portal -->
+    <div class="candidate-registration" id="candidatePortal">
+        <nav class="nav">
+            <div class="container nav-content">
+                <div class="logo">AutoHR - Candidate Portal</div>
+                <div class="nav-buttons">
+                    <button class="btn btn-outline" onclick="showPortalSelection()">Back to Portals</button>
+                </div>
+            </div>
+        </nav>
+
+        <div class="registration-content">
+            <!-- Candidate Stats -->
+            <div class="registration-stats">
+                <div class="stat-card">
+                    <div class="stat-number">127</div>
+                    <div class="stat-label">Active Jobs</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">42</div>
+                    <div class="stat-label">Companies Hiring</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">15</div>
+                    <div class="stat-label">New Today</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">89%</div>
+                    <div class="stat-label">Remote Positions</div>
+                </div>
+            </div>
+
+            <!-- Quick Actions -->
+            <div class="quick-actions">
+                <div class="action-card" onclick="scrollToJobs()">
+                    <div class="action-icon">🔍</div>
+                    <h3>Browse Jobs</h3>
+                    <p>Explore all available positions and find your perfect match</p>
+                    <button class="btn btn-primary">View Jobs</button>
+                </div>
+                <div class="action-card" onclick="showApplicationForm()">
+                    <div class="action-icon">📝</div>
+                    <h3>Quick Apply</h3>
+                    <p>Submit your profile for quick consideration by recruiters</p>
+                    <button class="btn btn-outline">Apply Now</button>
+                </div>
+                <div class="action-card" onclick="showProfileSetup()">
+                    <div class="action-icon">👤</div>
+                    <h3>Create Profile</h3>
+                    <p>Build your professional profile to stand out to employers</p>
+                    <button class="btn btn-outline">Setup Profile</button>
+                </div>
+            </div>
+
+            <!-- Jobs Section (Same as public site) -->
+            <section class="jobs-section">
+                <h2 style="text-align: center; margin-bottom: 2rem; font-size: 2.5rem;">Available Data Positions</h2>
+                <p style="text-align: center; color: var(--text-secondary); margin-bottom: 3rem; font-size: 1.1rem;">
+                    Discover your next career opportunity in data science and analytics
+                </p>
+                
+                <div class="container">
+                    <input type="text" class="search-box" placeholder="Search data jobs by title, skills, or company..." 
+                           onkeyup="filterJobs()" id="searchInput">
+                    
+                    <div class="filters">
+                        <select class="filter-select" onchange="filterJobs()" id="departmentFilter">
+                            <option value="">All Departments</option>
+                            <option value="Data Science">Data Science</option>
+                            <option value="Data Engineering">Data Engineering</option>
+                            <option value="Business Intelligence">Business Intelligence</option>
+                            <option value="Machine Learning">Machine Learning</option>
+                            <option value="Database Management">Database Management</option>
+                        </select>
+                        
+                        <select class="filter-select" onchange="filterJobs()" id="locationFilter">
+                            <option value="">All Locations</option>
+                            <option value="Remote">Remote</option>
+                            <option value="New York">New York</option>
+                            <option value="San Francisco">San Francisco</option>
+                            <option value="Austin">Austin</option>
+                            <option value="Boston">Boston</option>
+                        </select>
+                        
+                        <select class="filter-select" onchange="filterJobs()" id="typeFilter">
+                            <option value="">All Types</option>
+                            <option value="Full-time">Full-time</option>
+                            <option value="Part-time">Part-time</option>
+                            <option value="Intern">Intern</option>
+                            <option value="Contract">Contract</option>
+                        </select>
+                    </div>
+                    
+                    <div class="jobs-grid" id="jobsGrid">
+                        <!-- Jobs will be loaded here -->
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+
+    <!-- HR Dashboard (Unchanged) -->
+    <div class="hr-dashboard" id="hrDashboard">
+        <!-- Login Screen -->
+        <div class="container" id="loginScreen">
+            <div class="login-form">
+                <h2 style="text-align: center; margin-bottom: 2rem;">HR Portal Login</h2>
+                <form onsubmit="handleLogin(event)">
+                    <div class="form-group">
+                        <label class="form-label">Email Address</label>
+                        <input type="email" class="form-input" placeholder="hr@company.com" id="emailInput" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Password</label>
+                        <div class="password-input">
+                            <input type="password" class="form-input" placeholder="Enter your password" id="passwordInput" required>
+                            <button type="button" class="toggle-password" onclick="togglePassword()">👁️</button>
+                        </div>
+                    </div>
+                    <div id="loginError" style="color: #ef4444; margin-bottom: 1rem; display: none;">
+                        Invalid credentials. Please try again.
+                    </div>
+                    <button type="submit" class="btn btn-primary" style="width: 100%;">Sign In</button>
+                </form>
+                <div class="demo-credentials">
+                    <h4>Demo Credentials:</h4>
+                    <p>Email: hr@company.com</p>
+                    <p>Password: hr1234</p>
+                </div>
+                <div style="text-align: center; margin-top: 1rem;">
+                    <button class="btn btn-outline" onclick="showPortalSelection()" style="width: 100%;">Back to Portals</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Dashboard -->
+        <div id="mainDashboard" style="display: none;">
+            <div class="sidebar">
+                <div class="sidebar-header">
+                    <h3>HR Dashboard</h3>
+                    <p style="color: var(--text-secondary); font-size: 0.9rem;">Welcome back</p>
+                </div>
+                <nav class="sidebar-nav">
+                    <a class="nav-item active" onclick="showTab('jobs')">📋 Jobs</a>
+                    <a class="nav-item" onclick="showTab('postJob')">➕ Post Job</a>
+                    <a class="nav-item" onclick="showTab('applicants')">👥 Applicants</a>
+                    <a class="nav-item" onclick="showTab('subscription')">💳 Subscription</a>
+                </nav>
+                <div style="position: absolute; bottom: 2rem; left: 1.5rem; right: 1.5rem; background: var(--card); padding: 1rem; border-radius: 0.75rem; border: 1px solid var(--border);">
+                    <p style="font-size: 0.8rem; color: var(--text-secondary);">Current Plan</p>
+                    <p style="font-weight: 600;" id="currentPlan">Basic Plan</p>
+                </div>
+            </div>
+
+            <div class="main-content">
+                <!-- Jobs Tab -->
+                <div class="tab-content active" id="jobsTab">
+                    <h2 style="margin-bottom: 2rem;">Manage Data Jobs</h2>
+                    <div class="jobs-grid" id="hrJobsGrid">
+                        <!-- HR jobs will be loaded here -->
+                    </div>
+                </div>
+
+                <!-- Post Job Tab -->
+                <div class="tab-content" id="postJobTab">
+                    <h2 style="margin-bottom: 2rem;">Post a New Data Job</h2>
+                    <form onsubmit="handlePostJob(event)" style="background: var(--surface); padding: 2rem; border-radius: 1rem; border: 1px solid var(--border); max-width: 600px;">
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem;">
+                            <div class="form-group">
+                                <label class="form-label">Job Title *</label>
+                                <input type="text" class="form-input" id="jobTitle" required>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Department *</label>
+                                <select class="form-input" id="jobDepartment" required>
+                                    <option value="Data Science">Data Science</option>
+                                    <option value="Data Engineering">Data Engineering</option>
+                                    <option value="Business Intelligence">Business Intelligence</option>
+                                    <option value="Machine Learning">Machine Learning</option>
+                                    <option value="Database Management">Database Management</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem;">
+                            <div class="form-group">
+                                <label class="form-label">Location *</label>
+                                <select class="form-input" id="jobLocation" required>
+                                    <option value="Remote">Remote</option>
+                                    <option value="New York">New York</option>
+                                    <option value="San Francisco">San Francisco</option>
+                                    <option value="Austin">Austin</option>
+                                    <option value="Boston">Boston</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Employment Type *</label>
+                                <select class="form-input" id="jobType" required>
+                                    <option value="Full-time">Full-time</option>
+                                    <option value="Part-time">Part-time</option>
+                                    <option value="Intern">Intern</option>
+                                    <option value="Contract">Contract</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Job Description *</label>
+                            <textarea class="form-input" id="jobDescription" rows="4" required style="resize: vertical;"></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Post Job</button>
+                    </form>
+                </div>
+
+                <!-- Applicants Tab -->
+                <div class="tab-content" id="applicantsTab">
+                    <h2 style="margin-bottom: 2rem;">Applicants</h2>
+                    <div style="background: var(--surface); border-radius: 1rem; border: 1px solid var(--border); overflow: hidden;">
+                        <table style="width: 100%; border-collapse: collapse;">
+                            <thead>
+                                <tr style="border-bottom: 1px solid var(--border);">
+                                    <th style="padding: 1rem; text-align: left; color: var(--text-secondary); font-weight: normal;">Name</th>
+                                    <th style="padding: 1rem; text-align: left; color: var(--text-secondary); font-weight: normal;">Email</th>
+                                    <th style="padding: 1rem; text-align: left; color: var(--text-secondary); font-weight: normal;">Role</th>
+                                    <th style="padding: 1rem; text-align: left; color: var(--text-secondary); font-weight: normal;">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="applicantsTable">
+                                <!-- Applicants will be loaded here -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Subscription Tab -->
+                <div class="tab-content" id="subscriptionTab">
+                    <h2 style="margin-bottom: 2rem;">Subscription Plans</h2>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem;">
+                        <div style="background: var(--surface); padding: 2rem; border-radius: 1rem; border: 2px solid var(--primary);">
+                            <h3 style="text-align: center; margin-bottom: 1rem;">Basic Plan</h3>
+                            <div style="text-align: center; margin-bottom: 2rem;">
+                                <span style="font-size: 2rem; font-weight: bold;">€20</span>
+                                <span style="color: var(--text-secondary);">/one-time</span>
+                            </div>
+                            <ul style="list-style: none; margin-bottom: 2rem;">
+                                <li style="padding: 0.5rem 0; color: var(--text-secondary);">✓ Shortlist applicants</li>
+                                <li style="padding: 0.5rem 0; color: var(--text-secondary);">✗ Cannot reject applicants</li>
+                                <li style="padding: 0.5rem 0; color: var(--text-secondary);">✓ Basic features</li>
+                            </ul>
+                            <button class="btn btn-primary" style="width: 100%;" onclick="selectPlan('basic')">Select Basic</button>
+                        </div>
+                        <div style="background: var(--surface); padding: 2rem; border-radius: 1rem; border: 2px solid var(--border);">
+                            <h3 style="text-align: center; margin-bottom: 1rem;">Advanced Plan</h3>
+                            <div style="text-align: center; margin-bottom: 2rem;">
+                                <span style="font-size: 2rem; font-weight: bold;">€40</span>
+                                <span style="color: var(--text-secondary);">/yearly</span>
+                            </div>
+                            <ul style="list-style: none; margin-bottom: 2rem;">
+                                <li style="padding: 0.5rem 0; color: var(--text-secondary);">✓ Shortlist applicants</li>
+                                <li style="padding: 0.5rem 0; color: var(--text-secondary);">✓ Reject applicants</li>
+                                <li style="padding: 0.5rem 0; color: var(--text-secondary);">✓ All features</li>
+                            </ul>
+                            <button class="btn" style="width: 100%; background: var(--border); color: var(--text);" onclick="selectPlan('yearly')">Select Advanced</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Sample data for jobs
+        const jobs = [
+            {
+                id: 1,
+                title: "Data Analyst",
+                department: "Data Science",
+                location: "Remote",
+                type: "Full-time",
+                description: "We're seeking a skilled Data Analyst to transform complex data into actionable insights. You'll work with stakeholders to define metrics, create dashboards, and provide data-driven recommendations to drive business decisions.",
+                date: "2024-01-20",
+                active: true
+            },
+            {
+                id: 2,
+                title: "Data Scientist",
+                department: "Data Science",
+                location: "New York",
+                type: "Full-time",
+                description: "Join our data science team to build predictive models and machine learning solutions. You'll work on challenging problems including customer segmentation, recommendation systems, and forecasting using Python, R, and advanced statistical methods.",
+                date: "2024-01-18",
+                active: true
+            },
+            {
+                id: 3,
+                title: "Data Engineer",
+                department: "Data Engineering",
+                location: "San Francisco",
+                type: "Full-time",
+                description: "Build and maintain our scalable data infrastructure. You'll design ETL pipelines, optimize data warehouses, and ensure data quality and reliability across our analytics platform using technologies like Spark, Airflow, and cloud data services.",
+                date: "2024-01-15",
+                active: true
+            },
+            {
+                id: 4,
+                title: "Business Intelligence Developer",
+                department: "Business Intelligence",
+                location: "Austin",
+                type: "Full-time",
+                description: "Create powerful BI solutions that empower business teams with data. You'll develop interactive dashboards, reports, and data visualizations using tools like Tableau, Power BI, and SQL to help stakeholders monitor KPIs and performance metrics.",
+                date: "2024-01-12",
+                active: true
+            },
+            {
+                id: 5,
+                title: "Machine Learning Engineer",
+                department: "Machine Learning",
+                location: "Remote",
+                type: "Full-time",
+                description: "Design, build, and deploy machine learning models at scale. You'll work on developing ML pipelines, implementing algorithms, and optimizing model performance for production environments using Python, TensorFlow, and cloud ML services.",
+                date: "2024-01-10",
+                active: true
+            },
+            {
+                id: 6,
+                title: "Database Administrator",
+                department: "Database Management",
+                location: "Boston",
+                type: "Full-time",
+                description: "Manage and optimize our database systems for performance, security, and reliability. You'll handle database design, performance tuning, backup/recovery strategies, and ensure data integrity across SQL and NoSQL database environments.",
+                date: "2024-01-08",
+                active: true
+            },
+            {
+                id: 7,
+                title: "Data Science Intern",
+                department: "Data Science",
+                location: "Remote",
+                type: "Intern",
+                description: "Great opportunity for students to gain hands-on experience in data science. You'll assist with data analysis, model development, and visualization projects while learning from experienced data scientists and analysts.",
+                date: "2024-01-05",
+                active: true
+            }
+        ];
+
+        const applicants = [
+            { name: "Alex Johnson", email: "alex.johnson@email.com", role: "Data Analyst", date: "2024-01-22" },
+            { name: "Maria Garcia", email: "maria.garcia@email.com", role: "Data Scientist", date: "2024-01-21" },
+            { name: "David Chen", email: "david.chen@email.com", role: "Data Engineer", date: "2024-01-20" },
+            { name: "Sarah Williams", email: "sarah.w@email.com", role: "Business Intelligence Developer", date: "2024-01-19" },
+            { name: "James Wilson", email: "james.wilson@email.com", role: "Machine Learning Engineer", date: "2024-01-18" }
+        ];
+
+        // Portal Navigation Functions
+        function showPortalSelection() {
+            document.getElementById('portalSelection').style.display = 'flex';
+            document.getElementById('candidatePortal').style.display = 'none';
+            document.getElementById('hrDashboard').style.display = 'none';
+        }
+
+        function showCandidatePortal() {
+            document.getElementById('portalSelection').style.display = 'none';
+            document.getElementById('candidatePortal').style.display = 'block';
+            document.getElementById('hrDashboard').style.display = 'none';
+            initializeCandidatePortal();
+        }
+
+        function showHRLogin() {
+            document.getElementById('portalSelection').style.display = 'none';
+            document.getElementById('candidatePortal').style.display = 'none';
+            document.getElementById('hrDashboard').style.display = 'block';
+            document.getElementById('loginScreen').style.display = 'block';
+            document.getElementById('mainDashboard').style.display = 'none';
+        }
+
+        // Candidate Portal Functions
+        function initializeCandidatePortal() {
+            loadJobs();
+            showSkeletons();
+            setTimeout(() => {
+                hideSkeletons();
+                displayJobs(jobs);
+            }, 1500);
+        }
+
+        function scrollToJobs() {
+            document.getElementById('jobsGrid').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function showApplicationForm() {
+            alert('Quick Apply feature would open here! In a real application, this would show a form to submit your profile.');
+        }
+
+        function showProfileSetup() {
+            alert('Profile setup would open here! In a real application, this would allow candidates to create and manage their professional profiles.');
+        }
+
+        // Job Display Functions (Shared between portals)
+        function showSkeletons() {
+            const jobsGrid = document.getElementById('jobsGrid');
+            if (jobsGrid) {
+                jobsGrid.innerHTML = '';
+                for (let i = 0; i < 6; i++) {
+                    jobsGrid.innerHTML += `
+                        <div class="job-card">
+                            <div class="skeleton skeleton-title"></div>
+                            <div class="skeleton skeleton-text" style="width: 80%;"></div>
+                            <div class="skeleton skeleton-text" style="width: 60%;"></div>
+                            <div class="skeleton skeleton-text" style="width: 90%;"></div>
+                            <div class="skeleton skeleton-text" style="width: 70%; height: 2rem; margin-top: 1rem;"></div>
+                        </div>
+                    `;
+                }
+            }
+        }
+
+        function hideSkeletons() {
+            // Skeletons will be replaced by actual jobs
+        }
+
+        function loadJobs() {
+            console.log("Loading data jobs...");
+        }
+
+        function displayJobs(jobsToDisplay) {
+            const jobsGrid = document.getElementById('jobsGrid');
+            const hrJobsGrid = document.getElementById('hrJobsGrid');
+            
+            const jobsHTML = jobsToDisplay.map(job => `
+                <div class="job-card">
+                    <div class="job-title">${job.title}</div>
+                    <div class="job-meta">
+                        <div class="job-meta-item">🏢 ${job.department}</div>
+                        <div class="job-meta-item">📍 ${job.location}</div>
+                        <div class="job-meta-item">⏰ ${job.type}</div>
+                    </div>
+                    <div class="job-description">${job.description}</div>
+                    <div class="job-actions">
+                        <span class="job-date">Posted ${new Date(job.date).toLocaleDateString()}</span>
+                        <div class="action-buttons">
+                            <a href="#" class="btn-outline">View Details</a>
+                            <a href="https://docs.google.com/forms/d/e/1FAIpQLScg7mtXrg55ZBbVrGmWeZ0BCzFW1JXirP5ZGmNBkgTC3XF6Eg/viewform" 
+                               target="_blank" class="btn btn-primary" style="padding: 0.5rem 1rem; font-size: 0.9rem;">Apply Here</a>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+
+            if (jobsGrid) jobsGrid.innerHTML = jobsHTML;
+            if (hrJobsGrid) hrJobsGrid.innerHTML = jobsHTML;
+        }
+
+        function filterJobs() {
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+            const departmentFilter = document.getElementById('departmentFilter').value;
+            const locationFilter = document.getElementById('locationFilter').value;
+            const typeFilter = document.getElementById('typeFilter').value;
+
+            const filteredJobs = jobs.filter(job => {
+                const matchesSearch = job.title.toLowerCase().includes(searchTerm) ||
+                                    job.department.toLowerCase().includes(searchTerm) ||
+                                    job.location.toLowerCase().includes(searchTerm);
+                const matchesDepartment = !departmentFilter || job.department === departmentFilter;
+                const matchesLocation = !locationFilter || job.location === locationFilter;
+                const matchesType = !typeFilter || job.type === typeFilter;
+
+                return matchesSearch && matchesDepartment && matchesLocation && matchesType;
+            });
+            displayJobs(filteredJobs);
+        }
+
+        // HR Dashboard Functions (Unchanged)
+        function togglePassword() {
+            const passwordInput = document.getElementById('passwordInput');
+            passwordInput.type = passwordInput.type === 'password' ? 'text' : 'password';
+        }
+
+        function handleLogin(event) {
+            event.preventDefault();
+            const email = document.getElementById('emailInput').value;
+            const password = document.getElementById('passwordInput').value;
+            const errorDiv = document.getElementById('loginError');
+
+            if (email === 'hr@company.com' && password === 'hr1234') {
+                document.getElementById('loginScreen').style.display = 'none';
+                document.getElementById('mainDashboard').style.display = 'block';
+                loadHRData();
+            } else {
+                errorDiv.style.display = 'block';
+            }
+        }
+
+        function loadHRData() {
+            displayJobs(jobs);
+            
+            const applicantsTable = document.getElementById('applicantsTable');
+            if (applicantsTable) {
+                applicantsTable.innerHTML = applicants.map(applicant => `
+                    <tr style="border-bottom: 1px solid var(--border);">
+                        <td style="padding: 1rem;">${applicant.name}</td>
+                        <td style="padding: 1rem;">${applicant.email}</td>
+                        <td style="padding: 1rem;">${applicant.role}</td>
+                        <td style="padding: 1rem;">
+                            <button class="btn btn-primary" style="padding: 0.25rem 0.5rem; font-size: 0.8rem; margin-right: 0.5rem;">Shortlist</button>
+                            <button class="btn" style="padding: 0.25rem 0.5rem; font-size: 0.8rem; background: var(--border); color: var(--text);">Reject</button>
+                        </td>
+                    </tr>
+                `).join('');
+            }
+        }
+
+        function showTab(tabName) {
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.classList.remove('active');
+            });
+
+            document.getElementById(tabName + 'Tab').classList.add('active');
+            event.target.classList.add('active');
+        }
+
+        function handlePostJob(event) {
+            event.preventDefault();
+            alert('Data job posted successfully!');
+        }
+
+        function selectPlan(plan) {
+            document.getElementById('currentPlan').textContent = plan === 'basic' ? 'Basic Plan' : 'Advanced Yearly';
+            alert(`Selected ${plan} plan!`);
+            
+            const advancedPlanDiv = document.querySelector('#subscriptionTab > div > div:nth-child(2)');
+            if (plan === 'basic') {
+                advancedPlanDiv.style.borderColor = 'var(--border)';
+                document.querySelector('#subscriptionTab > div > div:nth-child(1)').style.borderColor = 'var(--primary)';
+            } else {
+                advancedPlanDiv.style.borderColor = 'var(--primary)';
+                document.querySelector('#subscriptionTab > div > div:nth-child(1)').style.borderColor = 'var(--border)';
+            }
+        }
+
+        // Initialize the application with portal selection
+        document.addEventListener('DOMContentLoaded', function() {
+            showPortalSelection();
+        });
+    </script>
+</body>
+</html>
