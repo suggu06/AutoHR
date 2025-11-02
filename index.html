@@ -981,13 +981,30 @@
             alert('Profile setup would open here! In a real application, this would allow candidates to create and manage their professional profiles.');
         }
 
-        // Job Display Functions (Shared between portals)
+        // Job Display Functions (Different for Candidate vs HR portals)
         function showSkeletons() {
             const jobsGrid = document.getElementById('jobsGrid');
+            const hrJobsGrid = document.getElementById('hrJobsGrid');
+            
             if (jobsGrid) {
                 jobsGrid.innerHTML = '';
                 for (let i = 0; i < 6; i++) {
                     jobsGrid.innerHTML += `
+                        <div class="job-card">
+                            <div class="skeleton skeleton-title"></div>
+                            <div class="skeleton skeleton-text" style="width: 80%;"></div>
+                            <div class="skeleton skeleton-text" style="width: 60%;"></div>
+                            <div class="skeleton skeleton-text" style="width: 90%;"></div>
+                            <div class="skeleton skeleton-text" style="width: 70%; height: 2rem; margin-top: 1rem;"></div>
+                        </div>
+                    `;
+                }
+            }
+            
+            if (hrJobsGrid) {
+                hrJobsGrid.innerHTML = '';
+                for (let i = 0; i < 6; i++) {
+                    hrJobsGrid.innerHTML += `
                         <div class="job-card">
                             <div class="skeleton skeleton-title"></div>
                             <div class="skeleton skeleton-text" style="width: 80%;"></div>
@@ -1012,7 +1029,8 @@
             const jobsGrid = document.getElementById('jobsGrid');
             const hrJobsGrid = document.getElementById('hrJobsGrid');
             
-            const jobsHTML = jobsToDisplay.map(job => `
+            // Candidate Portal Jobs (with Apply Here button)
+            const candidateJobsHTML = jobsToDisplay.map(job => `
                 <div class="job-card">
                     <div class="job-title">${job.title}</div>
                     <div class="job-meta">
@@ -1032,8 +1050,27 @@
                 </div>
             `).join('');
 
-            if (jobsGrid) jobsGrid.innerHTML = jobsHTML;
-            if (hrJobsGrid) hrJobsGrid.innerHTML = jobsHTML;
+            // HR Portal Jobs (ONLY View Details button - No Apply Here)
+            const hrJobsHTML = jobsToDisplay.map(job => `
+                <div class="job-card">
+                    <div class="job-title">${job.title}</div>
+                    <div class="job-meta">
+                        <div class="job-meta-item">🏢 ${job.department}</div>
+                        <div class="job-meta-item">📍 ${job.location}</div>
+                        <div class="job-meta-item">⏰ ${job.type}</div>
+                    </div>
+                    <div class="job-description">${job.description}</div>
+                    <div class="job-actions">
+                        <span class="job-date">Posted ${new Date(job.date).toLocaleDateString()}</span>
+                        <div class="action-buttons">
+                            <a href="#" class="btn-outline">View Details</a>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+
+            if (jobsGrid) jobsGrid.innerHTML = candidateJobsHTML;
+            if (hrJobsGrid) hrJobsGrid.innerHTML = hrJobsHTML;
         }
 
         function filterJobs() {
